@@ -37,6 +37,9 @@ public class Business {
     @OneToMany(mappedBy = "business", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<JobPost> posts;
 
+    @ManyToMany(mappedBy = "businesses", fetch = FetchType.LAZY)
+    private List<User> employees;
+
     @Column
     private String website;
 
@@ -46,4 +49,8 @@ public class Business {
     @MapKeyEnumerated(EnumType.STRING)
     @Column(name = "social_link")
     private Map<Socials, String> socials;
+
+    @Column
+    private String businessType;
+
 }

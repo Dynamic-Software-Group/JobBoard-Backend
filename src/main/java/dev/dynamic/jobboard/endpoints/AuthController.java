@@ -71,6 +71,7 @@ public class AuthController {
 
             return ResponseEntity.ok(jwt);
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }

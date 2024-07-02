@@ -52,4 +52,11 @@ public class JobPost {
 
     @Column
     private int applicants;
+
+    @ManyToOne
+    @JoinColumn(name = "business_id")
+    private Business business;
+
+    @ManyToMany(mappedBy = "bookmarkedPosts")
+    private List<User> bookmarkedBy;
 }

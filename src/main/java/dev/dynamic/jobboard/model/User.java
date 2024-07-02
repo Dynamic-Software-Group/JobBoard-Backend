@@ -26,13 +26,31 @@ public class User {
     @Column
     private String email;
 
+    @Column
+    private String avatar;
+
+    @Column
+    private String bio;
+
     @ElementCollection(targetClass = Tags.class, fetch = FetchType.LAZY)
     @CollectionTable(name = "user_tags", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     @Column(name = "tags")
     private List<Tags> tags;
 
-    @OneToMany(mappedBy = "bookmarked", fetch = FetchType.LAZY, orphanRemoval = true)
+    @ManyToMany
+    @JoinTable(
+            name = "user_bookmarked_posts",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "post_id")
+    )
     private List<JobPost> bookmarkedPosts;
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "user_business",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "business_id")
+    )
+    private List<Business> businesses;
 }
