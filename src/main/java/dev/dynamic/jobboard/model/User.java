@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 
+import java.util.List;
+
 @Data
 @Getter
 @Entity
@@ -22,4 +24,10 @@ public class User {
 
     @Column
     private String email;
+
+    @ElementCollection(targetClass = Tags.class, fetch = FetchType.LAZY)
+    @CollectionTable(name = "user_tags", joinColumns = @JoinColumn(name = "user_id"))
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tags")
+    private List<Tags> tags;
 }

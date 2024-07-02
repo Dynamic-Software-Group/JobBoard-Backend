@@ -9,17 +9,20 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 @Component
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
     private final JwtUtil jwtUtil;
     private final ObjectMapper mapper;
+    private final Logger logger = Logger.getLogger(JwtAuthorizationFilter.class.getName());
 
     public JwtAuthorizationFilter(JwtUtil jwtUtil, ObjectMapper mapper) {
         this.jwtUtil = jwtUtil;
@@ -48,6 +51,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
 
             Authentication auth = new UsernamePasswordAuthenticationToken(email, "", null);
+            SecurityContextHolder.getContext().setAuthentication(auth);
 
         } catch (Exception e) {
 
@@ -58,7 +62,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
-        return request.getServletPath().startsWith("/api/v1/auth");
+        return request.getServletPath().startsWith("/api/v1/auth") || request.getServletPath().startsWith("/actuator");
     }
 
 }
