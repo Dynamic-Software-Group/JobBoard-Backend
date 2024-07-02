@@ -1,6 +1,6 @@
 package dev.dynamic.jobboard.endpoints;
 
-import dev.dynamic.jobboard.model.Tags;
+import dev.dynamic.jobboard.model.enums.Tags;
 import dev.dynamic.jobboard.model.User;
 import dev.dynamic.jobboard.repositories.UserRepository;
 import org.springframework.http.ResponseEntity;

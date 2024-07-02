@@ -1,4 +1,4 @@
-package dev.dynamic.jobboard.model;
+package dev.dynamic.jobboard.model.enums;
 
 public enum Tags {
     FRONT_END,

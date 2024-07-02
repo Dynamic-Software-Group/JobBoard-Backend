@@ -1,5 +1,6 @@
 package dev.dynamic.jobboard.model;
 
+import dev.dynamic.jobboard.model.enums.Tags;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -30,4 +31,8 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(name = "tags")
     private List<Tags> tags;
+
+    @OneToMany(mappedBy = "bookmarked", fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<JobPost> bookmarkedPosts;
+
 }
