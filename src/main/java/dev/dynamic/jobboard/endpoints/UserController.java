@@ -98,21 +98,11 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping(value = "/businesses")
-    public ResponseEntity<?> getBusinesses() {
+    @GetMapping(value = "/business")
+    public ResponseEntity<?> getBusiness() {
         String email = EndpointUtils.getCurrentUserEmail();
         User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
-
-        List<Business> businesses = user.getBusinesses();
-
-        businesses.forEach(business -> {
-            business.getEmployees().forEach(employee -> {
-                employee.setBusinesses(null);
-                employee.setBookmarkedPosts(null);
-                employee.setPassword(null);
-            });
-        });
-
-        return ResponseEntity.ok(businesses);
+        Business business = user.getBusiness();
+        return ResponseEntity.ok(business);
     }
 }

@@ -30,15 +30,11 @@ public class Business {
     @Column
     private String businessEmail;
 
-    @ManyToOne
-    @JoinColumn(name = "owner_id")
+    @OneToOne(mappedBy = "business")
     private User owner;
 
     @OneToMany(mappedBy = "business", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<JobPost> posts;
-
-    @ManyToMany(mappedBy = "businesses", fetch = FetchType.LAZY)
-    private List<User> employees;
 
     @Column
     private String website;

@@ -9,6 +9,7 @@ import dev.dynamic.jobboard.repositories.UserRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -24,14 +25,15 @@ public class BusinessController {
     }
 
     @PatchMapping(value = "/update")
-    public ResponseEntity<?> updateBusiness(@RequestBody UpdateBusinessRequest request, @RequestParam Long businessId) {
-        Optional<Business> businessOptional = businessRepository.findById(businessId);
+    public ResponseEntity<?> updateBusiness(@RequestBody UpdateBusinessRequest request) {
+        String email = EndpointUtils.getCurrentUserEmail();
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
 
-        if (businessOptional.isEmpty()) {
+        Business business = businessRepository.findByOwner(user);
+
+        if (business == null) {
             return ResponseEntity.notFound().build();
         }
-
-        Business business = businessOptional.get();
 
         if (request.getAvatar() != null) {
             business.setAvatar(request.getAvatar());
@@ -80,13 +82,25 @@ public class BusinessController {
         business.setWebsite(request.getWebsite());
         business.setBusinessEmail(request.getBusinessEmail());
 
-        user.getBusinesses().add(business);
-
+        user.setBusiness(business);
         businessRepository.save(business);
         userRepository.save(user);
 
         Long businessId = business.getId();
 
         return ResponseEntity.ok(businessId);
+    }
+
+    @GetMapping(value = "/get")
+    public ResponseEntity<?> getBusiness(@RequestParam Long businessId) {
+        Optional<Business> businessOptional = businessRepository.findById(businessId);
+
+        if (businessOptional.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Business business = businessOptional.get();
+
+        return ResponseEntity.ok(business);
     }
 }

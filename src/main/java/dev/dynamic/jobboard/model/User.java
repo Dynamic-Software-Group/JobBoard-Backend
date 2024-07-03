@@ -46,11 +46,10 @@ public class User {
     )
     private List<JobPost> bookmarkedPosts;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "user_business",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "business_id")
-    )
-    private List<Business> businesses;
+    @OneToOne
+    @JoinColumn(name = "business_id")
+    private Business business;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<Experience> experiences;
 }
