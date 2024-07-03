@@ -1,4 +1,4 @@
-package dev.dynamic.jobboard.endpoints.requests;
+package dev.dynamic.jobboard.endpoints.requests.users;
 
 import lombok.Data;
 

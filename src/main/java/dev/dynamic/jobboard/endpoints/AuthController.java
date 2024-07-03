@@ -1,7 +1,7 @@
 package dev.dynamic.jobboard.endpoints;
 
-import dev.dynamic.jobboard.endpoints.requests.LoginRequest;
-import dev.dynamic.jobboard.endpoints.requests.RegisterRequest;
+import dev.dynamic.jobboard.endpoints.requests.users.LoginRequest;
+import dev.dynamic.jobboard.endpoints.requests.users.RegisterRequest;
 import dev.dynamic.jobboard.model.User;
 import dev.dynamic.jobboard.repositories.UserRepository;
 import dev.dynamic.jobboard.security.JwtUtil;
@@ -55,6 +55,10 @@ public class AuthController {
     @PostMapping(value = "/register", consumes = "application/json", produces = "application/json")
     public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
         try {
+            if (userRepository.findByEmail(request.getEmail()).isPresent() || userRepository.findByUsername(request.getUsername()).isPresent()) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            }
+
             User user = new User();
             user.setEmail(request.getEmail());
             user.setUsername(request.getUsername());

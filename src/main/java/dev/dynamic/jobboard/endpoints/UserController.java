@@ -1,7 +1,8 @@
 package dev.dynamic.jobboard.endpoints;
 
-import dev.dynamic.jobboard.endpoints.requests.BookmarkPostRequest;
-import dev.dynamic.jobboard.endpoints.requests.UpdateUserRequest;
+import dev.dynamic.jobboard.endpoints.requests.users.BookmarkPostRequest;
+import dev.dynamic.jobboard.endpoints.requests.users.UpdateUserRequest;
+import dev.dynamic.jobboard.model.Business;
 import dev.dynamic.jobboard.model.JobPost;
 import dev.dynamic.jobboard.model.enums.Tags;
 import dev.dynamic.jobboard.model.User;
@@ -102,6 +103,16 @@ public class UserController {
         String email = EndpointUtils.getCurrentUserEmail();
         User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
 
-        return ResponseEntity.ok(user.getBusinesses());
+        List<Business> businesses = user.getBusinesses();
+
+        businesses.forEach(business -> {
+            business.getEmployees().forEach(employee -> {
+                employee.setBusinesses(null);
+                employee.setBookmarkedPosts(null);
+                employee.setPassword(null);
+            });
+        });
+
+        return ResponseEntity.ok(businesses);
     }
 }
