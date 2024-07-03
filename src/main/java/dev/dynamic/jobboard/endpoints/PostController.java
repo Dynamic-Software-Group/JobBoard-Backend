@@ -42,7 +42,11 @@ public class PostController {
 
         JobPost post = getJobPost(request, business);
 
-        business.getPosts().add(post);
+        if (business.getPosts() == null) {
+            business.setPosts(List.of(post));
+        } else {
+            business.getPosts().add(post);
+        }
 
         businessRepository.save(business);
         jobPostRepository.save(post);
@@ -79,6 +83,11 @@ public class PostController {
         }
 
         List<JobPost> posts = business.getPosts();
+
+        if (posts == null || posts.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
         posts.forEach(post -> post.setBusiness(null));
 
         return ResponseEntity.ok(posts);

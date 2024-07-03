@@ -49,7 +49,4 @@ public class User {
     @OneToOne
     @JoinColumn(name = "business_id")
     private Business business;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<Experience> experiences;
 }
