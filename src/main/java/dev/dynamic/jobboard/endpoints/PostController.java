@@ -123,4 +123,30 @@ public class PostController {
 
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/get-all-active")
+    public ResponseEntity<?> getAllPosts() {
+        List<JobPost> posts = jobPostRepository.findAll();
+
+        posts = posts.stream().filter(JobPost::isActive).toList();
+
+        posts.forEach(post -> {
+            post.getBusiness().getOwner().setBusiness(null);
+        });
+
+        return ResponseEntity.ok(posts);
+    }
+
+    @GetMapping("/get-all-archive")
+    public ResponseEntity<?> getAllArchivePosts() {
+        List<JobPost> posts = jobPostRepository.findAll();
+
+        posts = posts.stream().filter(post -> !post.isActive()).toList();
+
+        posts.forEach(post -> {
+            post.getBusiness().getOwner().setBusiness(null);
+        });
+
+        return ResponseEntity.ok(posts);
+    }
 }

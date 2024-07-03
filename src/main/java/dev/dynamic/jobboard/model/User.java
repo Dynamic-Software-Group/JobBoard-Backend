@@ -49,4 +49,7 @@ public class User {
     @OneToOne
     @JoinColumn(name = "business_id")
     private Business business;
+
+    @OneToMany(mappedBy = "user")
+    private List<Experience> experiences;
 }

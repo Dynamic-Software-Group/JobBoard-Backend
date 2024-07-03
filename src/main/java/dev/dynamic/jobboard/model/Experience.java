@@ -34,4 +34,8 @@ public class Experience {
 
     @Column
     private String description;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }

@@ -19,4 +19,10 @@ public interface JobPostRepository extends JpaRepository<JobPost, Long> {
 
     @Cacheable(value = "jobPosts")
     List<JobPost> findAll();
+
+    @Cacheable(value = "jobPosts")
+    List<JobPost> findAllByActiveFalse();
+
+    @Cacheable(value = "jobPosts")
+    List<JobPost> findAllByActiveTrue();
 }

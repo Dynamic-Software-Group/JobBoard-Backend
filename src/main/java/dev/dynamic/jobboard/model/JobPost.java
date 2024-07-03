@@ -59,4 +59,7 @@ public class JobPost {
 
     @ManyToMany(mappedBy = "bookmarkedPosts")
     private List<User> bookmarkedBy;
+
+    @Column
+    private boolean active; // if false, it is archived
 }
