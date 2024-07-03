@@ -8,9 +8,11 @@ import dev.dynamic.jobboard.repositories.BusinessRepository;
 import dev.dynamic.jobboard.repositories.JobPostRepository;
 import dev.dynamic.jobboard.repositories.UserRepository;
 import lombok.Data;
+import org.slf4j.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -76,7 +78,10 @@ public class PostController {
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok(business.getPosts());
+        List<JobPost> posts = business.getPosts();
+        posts.forEach(post -> post.setBusiness(null));
+
+        return ResponseEntity.ok(posts);
     }
 
     @GetMapping(value = "/get/{id}")
@@ -86,6 +91,8 @@ public class PostController {
         if (post.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
+
+        post.get().setBusiness(null);
 
         return ResponseEntity.ok(post);
     }
